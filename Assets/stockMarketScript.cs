@@ -1038,4 +1038,49 @@ public class stockMarketScript : MonoBehaviour
         var correctIndex = Array.IndexOf(companyPoints, companyPoints.Max());
         correctAnswer = companyName[correctIndex];
     }
+
+#pragma warning disable 414
+	private string TwitchHelpMessage = "Submit HSBC with !{0} submit HSBC. You can also use the first letter of the company in the submit command.";
+#pragma warning restore 414
+
+	private IEnumerator ProcessTwitchCommand(string command)
+	{
+		command = command.Trim();
+		string[] split = command.ToLowerInvariant().Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+		if (split[0] == "left")
+		{
+			yield return null;
+			yield return new[] { cycleLeftButton };
+		}
+		else if (split[0] == "right")
+		{
+			yield return null;
+			yield return new[] { cycleRightButton };
+		}
+		else if (split[0].EqualsAny("submit", "invest") && split.Length == 1)
+		{
+			yield return null;
+			yield return new[] { investButton };
+		}
+		else if (split[0].EqualsAny("submit", "invest"))
+		{
+			bool valid = false;
+			foreach (string company in companyOptions)
+			{
+				if (company.ToLowerInvariant().StartsWith(split[1][0].ToString()))
+					valid = true;
+			}
+			if (!valid) yield break;
+
+			yield return null;
+			while (!displayedCompany.text.ToLowerInvariant().StartsWith(split[1][0].ToString()))
+			{
+				yield return null;
+				yield return new[] { cycleRightButton };
+				yield return "trycancel";
+			}
+			yield return new { investButton };
+		}
+		else yield break;
+	}
 }
