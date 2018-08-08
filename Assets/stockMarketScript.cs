@@ -1057,7 +1057,7 @@ public class stockMarketScript : MonoBehaviour
 			yield return null;
 			yield return new[] { cycleRightButton };
 		}
-		else if (split[0] == "submit" || split[0] == "invest" && split.Length == 1)
+		else if ((split[0] == "submit" || split[0] == "invest") && split.Length == 1)
 		{
 			yield return null;
 			yield return new[] { investButton };
