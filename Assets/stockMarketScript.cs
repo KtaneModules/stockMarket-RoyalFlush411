@@ -1079,7 +1079,7 @@ public class stockMarketScript : MonoBehaviour
 				yield return new[] { cycleRightButton };
 				yield return "trycancel";
 			}
-			yield return new { investButton };
+			yield return new[] { investButton };
 		}
 		else yield break;
 	}
