@@ -249,17 +249,17 @@ public class stockMarketScript : MonoBehaviour
         GetComponent<KMSelectable>().AddInteractionPunch();
         for (int k=0; k<4; k++)
         {
-            if (displayedCompany.text == companyNames[k] && companyCorrect[k])
+            if (displayedCompany.text == companyName[k] && companyCorrect[k])
             {
                 Audio.PlaySoundAtTransform("cash", transform);
                 GetComponent<KMBombModule>().HandlePass();
-                Debug.LogFormat("[The Stock Market #{0}] You have invested in {1}. That is correct. Module disarmed.", moduleId, companyNames[k]);
+                Debug.LogFormat("[The Stock Market #{0}] You have invested in {1}. That is correct. Module disarmed.", moduleId, companyName[k]);
                 moduleSolved = true;
             }
-            else if (displayedCompany.text == companyNames[k])
+            else if (displayedCompany.text == companyName[k])
             {
                 GetComponent<KMBombModule>().HandleStrike();
-                Debug.LogFormat("[The Stock Market #{0}] Strike! You have invested in {1}. That is incorrect. Module reset.", moduleId, companyNames[k]);
+                Debug.LogFormat("[The Stock Market #{0}] Strike! You have invested in {1}. That is incorrect. Module reset.", moduleId, companyName[k]);
                 clearAll();
             }
         }
