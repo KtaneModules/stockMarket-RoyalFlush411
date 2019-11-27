@@ -92,7 +92,7 @@ public class stockMarketScript : MonoBehaviour
     private int[] totalFluxPoints = new int[4];
     private int[] totalBaseValue = new int[4];
     //private string correctAnswer = "";
-    private bool[] companyCorrect = new string[4];
+    private bool[] companyCorrect = new bool[4];
 
     //Logging
     static int moduleIdCounter = 1;
