@@ -1064,8 +1064,7 @@ public class stockMarketScript : MonoBehaviour
             }
         }
 
-        /*
-        var correctIndex = Array.IndexOf(companyPoints, companyPoints.Max());
+        /*var correctIndex = Array.IndexOf(companyPoints, companyPoints.Max());
         correctAnswer = companyName[correctIndex];*/
     }
 
