@@ -91,7 +91,8 @@ public class stockMarketScript : MonoBehaviour
     private int[] fluxPoints4 = new int[4];
     private int[] totalFluxPoints = new int[4];
     private int[] totalBaseValue = new int[4];
-    private string correctAnswer = "";
+    //private string correctAnswer = "";
+    private bool[] companyCorrect = new bool[4];
 
     //Logging
     static int moduleIdCounter = 1;
@@ -200,8 +201,19 @@ public class stockMarketScript : MonoBehaviour
         Debug.LogFormat("[The Stock Market #{0}] Total fluctuation points of {1}: {2}.", moduleId, companyName[3], totalFluxPoints[3]);
 
         Debug.LogFormat("[The Stock Market #{0}] {1} points are {2}. {3} points are {4}. {5} points are {6}. {7} points are {8}.", moduleId, companyName[0], companyPoints[0], companyName[1], companyPoints[1], companyName[2], companyPoints[2], companyName[3], companyPoints[3]);
-        Debug.LogFormat("[The Stock Market #{0}] The correct investment is {1}.", moduleId, correctAnswer);
-
+        //list all possible correct answers
+        for (int j = 0; j < 4; j++)
+        {
+            if (companyCorrect[j])
+            {
+                Debug.LogFormat("[The Stock Market #{0}] {1} detected as valid.", moduleId, companyName[j]);
+            }
+            else
+            {
+                Debug.LogFormat("[The Stock Market #{0}] {1} detected as invalid.", moduleId, companyName[j]);
+            }
+        }
+            //Debug.LogFormat("[The Stock Market #{0}] The correct investment is {1}.", moduleId, correctAnswer);
     }
 
     public void onCycleLeftButton()
@@ -235,20 +247,23 @@ public class stockMarketScript : MonoBehaviour
             return;
         }
         GetComponent<KMSelectable>().AddInteractionPunch();
-        if(displayedCompany.text == correctAnswer)
+        for (int k=0; k<4; k++)
         {
-            Audio.PlaySoundAtTransform("cash", transform);
-            GetComponent<KMBombModule>().HandlePass();
-            Debug.LogFormat("[The Stock Market #{0}] You have invested in {1}. That is correct. Module disarmed.", moduleId, correctAnswer);
-            moduleSolved = true;
+            if (displayedCompany.text == companyName[k] && companyCorrect[k])
+            {
+                Audio.PlaySoundAtTransform("cash", transform);
+                GetComponent<KMBombModule>().HandlePass();
+                Debug.LogFormat("[The Stock Market #{0}] You have invested in {1}. That is correct. Module disarmed.", moduleId, companyName[k]);
+                moduleSolved = true;
+            }
+            else if (displayedCompany.text == companyName[k])
+            {
+                GetComponent<KMBombModule>().HandleStrike();
+                Debug.LogFormat("[The Stock Market #{0}] Strike! You have invested in {1}. That is incorrect. Module reset.", moduleId, companyName[k]);
+                clearAll();
+            }
         }
-        else
-        {
-            GetComponent<KMBombModule>().HandleStrike();
-            Debug.LogFormat("[The Stock Market #{0}] Strike! You have invested in {1}. That is incorrect. Module reset.", moduleId, displayedCompany.text);
-            clearAll();
-        }
-
+       
     }
 
     void pickCompanies()
@@ -1035,8 +1050,22 @@ public class stockMarketScript : MonoBehaviour
         companyPoints[1] += totalFluxPoints[1];
         companyPoints[2] += totalFluxPoints[2];
         companyPoints[3] += totalFluxPoints[3];
-        var correctIndex = Array.IndexOf(companyPoints, companyPoints.Max());
-        correctAnswer = companyName[correctIndex];
+
+        //determine the correct companies
+        for (int i = 0; i < 4; i++)
+        {
+            if (companyPoints[i] == companyPoints.Max())
+            {
+                companyCorrect[i] = true;
+            }
+            else
+            {
+                companyCorrect[i] = false;
+            }
+        }
+
+        /*var correctIndex = Array.IndexOf(companyPoints, companyPoints.Max());
+        correctAnswer = companyName[correctIndex];*/
     }
 
 #pragma warning disable 414
