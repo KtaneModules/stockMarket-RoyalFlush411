@@ -265,6 +265,13 @@ public class stockMarketScript : MonoBehaviour
                 clearAll();
                 actionTaken = true;
             }
+            if (!actionTaken && k == 3)
+            {
+                GetComponent<KMBombModule>().HandleStrike();
+                Debug.LogFormat("[The Stock Market #{0}] Strike! You invested in a company that was not listed on the module. Module reset.", moduleId, companyName[k]);
+                clearAll();
+                actionTaken = true;
+            }
         }
        
     }
