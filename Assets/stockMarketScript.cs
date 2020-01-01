@@ -210,7 +210,7 @@ public class stockMarketScript : MonoBehaviour
             }
             else
             {
-                Debug.LogFormat("[The Stock Market #{0}] {1} detected as invalid.", moduleId, companyName[j]);
+                //Debug.LogFormat("[The Stock Market #{0}] {1} detected as invalid.", moduleId, companyName[j]);
             }
         }
             //Debug.LogFormat("[The Stock Market #{0}] The correct investment is {1}.", moduleId, correctAnswer);
@@ -268,7 +268,7 @@ public class stockMarketScript : MonoBehaviour
             if (!actionTaken && k == 3)
             {
                 GetComponent<KMBombModule>().HandleStrike();
-                Debug.LogFormat("[The Stock Market #{0}] Strike! You invested in a company that was not listed on the module. Module reset.", moduleId, companyName[k]);
+                Debug.LogFormat("[The Stock Market #{0}] Strike! You have invested in {1}. This is not listed. Module reset.", moduleId, displayedCompany.text);
                 clearAll();
                 actionTaken = true;
             }
