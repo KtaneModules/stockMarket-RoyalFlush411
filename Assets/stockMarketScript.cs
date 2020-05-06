@@ -210,7 +210,7 @@ public class stockMarketScript : MonoBehaviour
             }
             else
             {
-                Debug.LogFormat("[The Stock Market #{0}] {1} detected as invalid.", moduleId, companyName[j]);
+                //Debug.LogFormat("[The Stock Market #{0}] {1} detected as invalid.", moduleId, companyName[j]);
             }
         }
             //Debug.LogFormat("[The Stock Market #{0}] The correct investment is {1}.", moduleId, correctAnswer);
@@ -242,6 +242,7 @@ public class stockMarketScript : MonoBehaviour
 
     public void onInvestButton()
     {
+        bool actionTaken = false;
         if(moduleSolved)
         {
             return;
@@ -249,18 +250,27 @@ public class stockMarketScript : MonoBehaviour
         GetComponent<KMSelectable>().AddInteractionPunch();
         for (int k=0; k<4; k++)
         {
-            if (displayedCompany.text == companyName[k] && companyCorrect[k])
+            if (displayedCompany.text == companyName[k] && companyCorrect[k] && !actionTaken)
             {
                 Audio.PlaySoundAtTransform("cash", transform);
                 GetComponent<KMBombModule>().HandlePass();
                 Debug.LogFormat("[The Stock Market #{0}] You have invested in {1}. That is correct. Module disarmed.", moduleId, companyName[k]);
                 moduleSolved = true;
+                actionTaken = true;
             }
-            else if (displayedCompany.text == companyName[k])
+            else if (displayedCompany.text == companyName[k] && !actionTaken)
             {
                 GetComponent<KMBombModule>().HandleStrike();
                 Debug.LogFormat("[The Stock Market #{0}] Strike! You have invested in {1}. That is incorrect. Module reset.", moduleId, companyName[k]);
                 clearAll();
+                actionTaken = true;
+            }
+            if (!actionTaken && k == 3)
+            {
+                GetComponent<KMBombModule>().HandleStrike();
+                Debug.LogFormat("[The Stock Market #{0}] Strike! You have invested in {1}. This is not listed. Module reset.", moduleId, displayedCompany.text);
+                clearAll();
+                actionTaken = true;
             }
         }
        
